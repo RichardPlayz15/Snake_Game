@@ -13,6 +13,12 @@ black = (0, 0, 0)
 red = (213, 50, 80)
 green = (0, 255, 0)
 blue = (50, 153, 213)
+orange = (255, 165, 0)
+purple = (160, 32, 240)
+pink = (255, 105, 180)
+
+# Food color options
+food_colors = [green, red, yellow, orange, purple, pink]
 
 # Display dimensions
 dis_width = 400
@@ -132,6 +138,7 @@ def gameLoop():
 
     foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
     foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
+    food_color = random.choice(food_colors)
 
     while not game_over:
         while game_close:
@@ -177,7 +184,7 @@ def gameLoop():
         x1 += x1_change
         y1 += y1_change
         dis.fill(blue)
-        pygame.draw.rect(dis, green, [foodx, foody, snake_block, snake_block])  # food is green
+        pygame.draw.rect(dis, food_color, [foodx, foody, snake_block, snake_block])  # random food color
         snake_Head = [x1, y1]
         snake_List.append(snake_Head)
         if len(snake_List) > Length_of_snake:
@@ -196,6 +203,7 @@ def gameLoop():
             pygame.mixer.Sound.play(chomp_sound)
             foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
             foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
+            food_color = random.choice(food_colors)  # pick a new color each time
             Length_of_snake += 1
 
             if (Length_of_snake - 1) > high_score:
