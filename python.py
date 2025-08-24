@@ -149,7 +149,6 @@ def gameLoop():
     Length_of_snake = 1
 
     foodx, foody, food_color, food_points = spawn_food()
-
     golden_combo = 0  # combo counter
 
     while not game_over:
@@ -220,11 +219,22 @@ def gameLoop():
         if x1 == foodx and y1 == foody:
             if food_color == gold:
                 golden_combo += 1
-                points = 3 * golden_combo  # combo multiplier
+                points = 3 * golden_combo
                 pygame.mixer.Sound.play(golden_sound)
+
+                # Flash snake gold
                 our_snake(snake_block, snake_List, gold)
                 pygame.display.update()
-                pygame.time.delay(150)
+                pygame.time.delay(100)
+
+                # Sparkle effect around snake head
+                for _ in range(8):
+                    spark_x = snake_Head[0] + random.randint(-5, 5)
+                    spark_y = snake_Head[1] + random.randint(-5, 5)
+                    spark_radius = random.randint(1, 3)
+                    pygame.draw.circle(dis, yellow, (spark_x, spark_y), spark_radius)
+                pygame.display.update()
+                pygame.time.delay(100)
             else:
                 pygame.mixer.Sound.play(chomp_sound)
                 points = 1
