@@ -16,7 +16,7 @@ blue = (50, 153, 213)
 orange = (255, 165, 0)
 purple = (160, 32, 240)
 pink = (255, 105, 180)
-gold = (255, 215, 0)  # golden food
+gold = (255, 215, 0)
 
 # Food color options
 food_colors = [green, red, yellow, orange, purple, pink]
@@ -31,8 +31,8 @@ pygame.display.set_caption('Snake Game by GitHub Copilot')
 
 clock = pygame.time.Clock()
 snake_block = 10
-snake_speed = 15  # default, set on splash
-snake_color = black  # will update on difficulty
+snake_speed = 15  # default
+snake_color = black
 
 # Fonts
 font_style = pygame.font.SysFont("bahnschrift", 20)
@@ -42,6 +42,7 @@ score_font = pygame.font.SysFont("comicsansms", 20)
 chomp_sound = pygame.mixer.Sound("chomp.wav")
 highscore_sound = pygame.mixer.Sound("highscore.wav")
 gameover_sound = pygame.mixer.Sound("gameover.wav")
+golden_sound = pygame.mixer.Sound("golden.wav")
 
 # High score file
 highscore_file = "highscore.txt"
@@ -112,7 +113,6 @@ def pause_game():
         message("Game Paused", yellow, -20)
         message("Press P to Resume or Q to Quit", white, 20)
         pygame.display.update()
-        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -127,7 +127,7 @@ def pause_game():
 def spawn_food():
     foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
     foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
-    if random.random() < 0.1:  # 10% chance
+    if random.random() < 0.1:  # 10% chance golden
         color = gold
         points = 3
     else:
@@ -157,7 +157,6 @@ def gameLoop():
             message("Press C-Play Again or Q-Quit", white, 20)
             Your_score(Length_of_snake - 1, high_score)
             pygame.display.update()
-
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_q:
@@ -210,9 +209,18 @@ def gameLoop():
         pygame.display.update()
 
         if x1 == foodx and y1 == foody:
-            pygame.mixer.Sound.play(chomp_sound)
+            if food_color == gold:
+                pygame.mixer.Sound.play(golden_sound)
+                # Flash snake gold
+                our_snake(snake_block, snake_List, gold)
+                pygame.display.update()
+                pygame.time.delay(150)
+            else:
+                pygame.mixer.Sound.play(chomp_sound)
+
             Length_of_snake += food_points
             foodx, foody, food_color, food_points = spawn_food()
+
             if (Length_of_snake - 1) > high_score:
                 high_score = Length_of_snake - 1
                 with open(highscore_file, "w") as f:
@@ -224,6 +232,6 @@ def gameLoop():
     pygame.quit()
     quit()
 
-# Run splash screen first
+# Start game
 splash_screen()
 gameLoop()
