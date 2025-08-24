@@ -24,7 +24,8 @@ pygame.display.set_caption('Snake Game by GitHub Copilot')
 
 clock = pygame.time.Clock()
 snake_block = 10
-snake_speed = 15  # default, can be changed by difficulty
+snake_speed = 15  # default, set on splash
+snake_color = black  # will update on difficulty
 
 # Fonts
 font_style = pygame.font.SysFont("bahnschrift", 20)
@@ -49,9 +50,9 @@ def Your_score(score, high_score):
     dis.blit(score_text, [5, 5])
     dis.blit(high_text, [dis_width - 100, 5])
 
-def our_snake(snake_block, snake_list):
+def our_snake(snake_block, snake_list, color):
     for x in snake_list:
-        pygame.draw.rect(dis, black, [x[0], x[1], snake_block, snake_block])
+        pygame.draw.rect(dis, color, [x[0], x[1], snake_block, snake_block])
 
 def message(msg, color, y_offset=0):
     mesg = font_style.render(msg, True, color)
@@ -73,7 +74,7 @@ def splash_screen():
 
     pygame.display.update()
 
-    global snake_speed
+    global snake_speed, snake_color
     waiting = True
     while waiting:
         for event in pygame.event.get():
@@ -81,14 +82,17 @@ def splash_screen():
                 pygame.quit()
                 quit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_1:
+                if event.key == pygame.K_1:  # Easy
                     snake_speed = 10
+                    snake_color = green
                     waiting = False
-                elif event.key == pygame.K_2:
+                elif event.key == pygame.K_2:  # Medium
                     snake_speed = 15
+                    snake_color = yellow
                     waiting = False
-                elif event.key == pygame.K_3:
+                elif event.key == pygame.K_3:  # Hard
                     snake_speed = 25
+                    snake_color = red
                     waiting = False
                 elif event.key == pygame.K_q:
                     pygame.quit()
@@ -173,7 +177,7 @@ def gameLoop():
         x1 += x1_change
         y1 += y1_change
         dis.fill(blue)
-        pygame.draw.rect(dis, green, [foodx, foody, snake_block, snake_block])
+        pygame.draw.rect(dis, green, [foodx, foody, snake_block, snake_block])  # food is green
         snake_Head = [x1, y1]
         snake_List.append(snake_Head)
         if len(snake_List) > Length_of_snake:
@@ -184,7 +188,7 @@ def gameLoop():
                 pygame.mixer.Sound.play(gameover_sound)
                 game_close = True
 
-        our_snake(snake_block, snake_List)
+        our_snake(snake_block, snake_List, snake_color)
         Your_score(Length_of_snake - 1, high_score)
         pygame.display.update()
 
