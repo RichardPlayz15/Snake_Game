@@ -150,6 +150,8 @@ def gameLoop():
 
     foodx, foody, food_color, food_points = spawn_food()
 
+    golden_combo = 0  # combo counter
+
     while not game_over:
         while game_close:
             dis.fill(blue)
@@ -204,21 +206,31 @@ def gameLoop():
                 pygame.mixer.Sound.play(gameover_sound)
                 game_close = True
 
+        # Display snake
         our_snake(snake_block, snake_List, snake_color)
+
+        # Display golden combo
+        if golden_combo > 1:
+            combo_text = font_style.render(f"Golden x{golden_combo}!", True, gold)
+            dis.blit(combo_text, [dis_width / 3, 25])
+
         Your_score(Length_of_snake - 1, high_score)
         pygame.display.update()
 
         if x1 == foodx and y1 == foody:
             if food_color == gold:
+                golden_combo += 1
+                points = 3 * golden_combo  # combo multiplier
                 pygame.mixer.Sound.play(golden_sound)
-                # Flash snake gold
                 our_snake(snake_block, snake_List, gold)
                 pygame.display.update()
                 pygame.time.delay(150)
             else:
                 pygame.mixer.Sound.play(chomp_sound)
+                points = 1
+                golden_combo = 0
 
-            Length_of_snake += food_points
+            Length_of_snake += points
             foodx, foody, food_color, food_points = spawn_food()
 
             if (Length_of_snake - 1) > high_score:
