@@ -16,6 +16,7 @@ blue = (50, 153, 213)
 orange = (255, 165, 0)
 purple = (160, 32, 240)
 pink = (255, 105, 180)
+gold = (255, 215, 0)  # golden food
 
 # Food color options
 food_colors = [green, red, yellow, orange, purple, pink]
@@ -123,6 +124,17 @@ def pause_game():
                     pygame.quit()
                     quit()
 
+def spawn_food():
+    foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
+    foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
+    if random.random() < 0.1:  # 10% chance
+        color = gold
+        points = 3
+    else:
+        color = random.choice(food_colors)
+        points = 1
+    return foodx, foody, color, points
+
 def gameLoop():
     global high_score
     game_over = False
@@ -136,9 +148,7 @@ def gameLoop():
     snake_List = []
     Length_of_snake = 1
 
-    foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
-    foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
-    food_color = random.choice(food_colors)
+    foodx, foody, food_color, food_points = spawn_food()
 
     while not game_over:
         while game_close:
@@ -184,7 +194,7 @@ def gameLoop():
         x1 += x1_change
         y1 += y1_change
         dis.fill(blue)
-        pygame.draw.rect(dis, food_color, [foodx, foody, snake_block, snake_block])  # random food color
+        pygame.draw.rect(dis, food_color, [foodx, foody, snake_block, snake_block])
         snake_Head = [x1, y1]
         snake_List.append(snake_Head)
         if len(snake_List) > Length_of_snake:
@@ -201,11 +211,8 @@ def gameLoop():
 
         if x1 == foodx and y1 == foody:
             pygame.mixer.Sound.play(chomp_sound)
-            foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
-            foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
-            food_color = random.choice(food_colors)  # pick a new color each time
-            Length_of_snake += 1
-
+            Length_of_snake += food_points
+            foodx, foody, food_color, food_points = spawn_food()
             if (Length_of_snake - 1) > high_score:
                 high_score = Length_of_snake - 1
                 with open(highscore_file, "w") as f:
