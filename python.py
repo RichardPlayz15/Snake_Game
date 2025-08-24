@@ -24,7 +24,7 @@ pygame.display.set_caption('Snake Game by GitHub Copilot')
 
 clock = pygame.time.Clock()
 snake_block = 10
-snake_speed = 15
+snake_speed = 15  # default, can be changed by difficulty
 
 # Fonts
 font_style = pygame.font.SysFont("bahnschrift", 20)
@@ -60,11 +60,20 @@ def message(msg, color, y_offset=0):
 def splash_screen():
     dis.fill(blue)
     title = pygame.font.SysFont("comicsansms", 30).render("Snake Game", True, yellow)
-    tip = font_style.render("Press C to Play or Q to Quit", True, white)
-    dis.blit(title, [dis_width / 3.5, dis_height / 4])
-    dis.blit(tip, [dis_width / 6, dis_height / 2])
+    tip1 = font_style.render("Press 1 for Easy", True, white)
+    tip2 = font_style.render("Press 2 for Medium", True, white)
+    tip3 = font_style.render("Press 3 for Hard", True, white)
+    tip4 = font_style.render("Press Q to Quit", True, red)
+
+    dis.blit(title, [dis_width / 3.5, dis_height / 6])
+    dis.blit(tip1, [dis_width / 3.2, dis_height / 3])
+    dis.blit(tip2, [dis_width / 3.2, dis_height / 3 + 30])
+    dis.blit(tip3, [dis_width / 3.2, dis_height / 3 + 60])
+    dis.blit(tip4, [dis_width / 3.2, dis_height / 3 + 100])
+
     pygame.display.update()
 
+    global snake_speed
     waiting = True
     while waiting:
         for event in pygame.event.get():
@@ -72,9 +81,16 @@ def splash_screen():
                 pygame.quit()
                 quit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_c:
+                if event.key == pygame.K_1:
+                    snake_speed = 10
                     waiting = False
-                if event.key == pygame.K_q:
+                elif event.key == pygame.K_2:
+                    snake_speed = 15
+                    waiting = False
+                elif event.key == pygame.K_3:
+                    snake_speed = 25
+                    waiting = False
+                elif event.key == pygame.K_q:
                     pygame.quit()
                     quit()
 
@@ -127,6 +143,7 @@ def gameLoop():
                         game_over = True
                         game_close = False
                     if event.key == pygame.K_c:
+                        splash_screen()
                         gameLoop()
                         return
 
