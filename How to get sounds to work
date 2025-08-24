@@ -1,0 +1,49 @@
+Awesome 😃 let’s add sound effects to your Snake Game:
+
+Food eaten → “chomp” sound
+
+Game Over → “game over” sound
+
+New High Score → “celebration ding” sound
+
+
+
+🔊 How to add sounds:
+
+Put three .wav files in the same folder as your game:
+
+chomp.wav (for eating food)
+
+gameover.wav (when you lose)
+
+highscore.wav (when new high score is set)
+
+You can grab free sounds from sites like:
+
+freesound.org
+
+pixabay.com/sound-effects
+
+Rename them to match the filenames above.
+
+
+
+
+
+
+
+I created three sound effect files for your Snake game:
+
+🥕 chomp.wav → plays when the snake eats food
+
+🏆 highscore.wav → plays when a new high score is reached
+
+💀 gameover.wav → plays when the player loses
+
+You can download them from here:
+
+chomp.wav
+
+highscore.wav
+
+gameover.wav
