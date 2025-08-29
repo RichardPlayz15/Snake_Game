@@ -1,0 +1,41 @@
+Got it 👍 Right now, your game window is hard-coded to 400x300.
+If you want to make the screen bigger (or resize later), you just need to:
+
+Define configurable variables for the screen size.
+
+Automatically scale food/snake movement to your chosen snake_block.
+
+Keep everything else working no matter what screen size you set.
+
+Here’s how you can tweak your code:
+
+# --- Game Config ---
+snake_block = 20        # Size of snake blocks (scales everything)
+snake_speed = 15        # Base snake speed
+grid_width = 40         # Number of blocks horizontally
+grid_height = 30        # Number of blocks vertically
+
+# Auto-calculate display size
+dis_width = grid_width * snake_block
+dis_height = grid_height * snake_block
+
+# Initialize display
+dis = pygame.display.set_mode((dis_width, dis_height))
+pygame.display.set_caption('Snake Game Enhanced')
+
+✅ Why this helps:
+
+If you want a bigger screen, just change:
+
+grid_width = 60
+grid_height = 40
+
+
+The game window will become 60*20 = 1200 by 800.
+
+Snake still moves in neat grid steps (snake_block).
+
+Food spawn, walls, snake — all adapt automatically.
+
+
+👉 Do you want me to rewrite your whole script with this scaling system added in (so you can just change width/height easily), or just show you the spots to edit?
